@@ -3,67 +3,27 @@
 <html>
   <head>
     <title>Dominic Baggott - freelance web developer</title>
-    <script type="text/javascript" src="javascript/jquery.js"></script>
-    <script type="text/javascript" src="javascript/jquery.fancybox.js"></script>
-    <script type="text/javascript" src="javascript/jquery.scrollTo.js"></script>
-    <script type="text/javascript" src="javascript/dominicbaggott.js"></script>
     <script type="text/javascript" src="http://www.google-analytics.com/ga.js"></script>
     <link rel="stylesheet" type="text/css" href="dominicbaggott.css">
-    <link rel="stylesheet" type="text/css" href="fancybox/fancybox.css">
   </head>
   <body>
     <h1>Hi!<br>
-    I’m <strong>Dominic Baggott</strong>, a London-based client-side web developer.<br>
+    I’m <strong>Dominic Baggott</strong>, a London-based full-stack web developer.<br>
     I craft sites from standards-based code with a focus on usability.</h1>
 
     <div id="availability">
       <h2>Availability</h2>
-      <p>I am not available for work.</p>
+      <p>I am available from September 2013.</p>
     </div>
 
     <p>I am highly skilled in using HTML, CSS and JavaScript. I know my way
     around Photoshop and can use it to produce designs and mock-ups when
     required. I apply my knowledge of usability and user behaviour to all my
-    interface work. On the back-end I can knock out PHP with ease, write Java
-    fluently, and read Perl. In addition to my technical skills, I have
-    experience project-managing webapp development using Trac and Basecamp.</p>
+    interface work.</p>
 
-    <ul id="projects-overview">
-      <li>
-        <a href="#yourpreferences">
-          <img src="images/yourpreferences/thumb.png" height="280" width="280"
-               alt="screenshot of yourpreferences.net">
-        </a>
-        <h2>
-          Your Preferences
-          <a href="http://www.yourpreferences.net">visit site</a>
-        </h2>
-        <p>As well as project-managing the development of this webapp I was in
-        charge of designing the user experience and writing the front-end
-        code.</p>
-      </li>
-      <li>
-        <img src="images/chateaucolombier/thumb.png" height="280" width="280"
-             alt="screenshot of chateaucolombier.com">
-        <h2>
-          Château Colombier
-          <a href="http://www.chateaucolombier.com">visit site</a>
-        </h2>
-        <p>I designed and implemented this brochure-site for a holiday home in
-        the south of France, working with the owner to establish how best to
-        present their content.</p>
-      </li>
-      <li class="third-child">
-        <a href="#iportfolio">
-          <img src="images/iportfolio/thumb.png" height="280" width="280"
-               alt="screenshot of i-portfolio.co.uk">
-        </a>
-        <h2>i-Portfolio</h2>
-        <p>The final project I worked on at Icom was the redesign for this
-        career and education site aimed at 14–24 year olds. Unfortunately the
-        site is no longer active.</p>
-      </li>
-    </ul>
+    <p>On the back-end I can build Ruby apps from the ground up and knock out
+    PHP with ease. I can configure servers and databases for development and
+    production.</p>
 
     <p>If you need my skills on your project and want to discuss it, or you'd
     like a copy of my CV, please send me an email at
@@ -71,99 +31,6 @@
     I can work from my own office or yours, depending on your location and
     setup.</p>
 
-    <div id="projects">
-      <div id="yourpreferences">
-        <h2>
-          Your Preferences
-          <a href="http://www.yourpreferences.net">visit site</a>
-        </h2>
-        <div class="scroll-wrapper">
-          <ul class="project-detail">
-            <li>
-              <img src="images/yourpreferences/test.png" height="465" width="620" alt="">
-              <h3>The Test</h3>
-              <p>At the core of the app is a psychometric test to establish what
-              your <a href="http://en.wikipedia.org/wiki/Psychological_Types">type
-              preferences</a> are. Originally developed for people with
-              learning disabilities, the test is based around choosing several
-              images from pairs of options.</p>
-              <p>As it turns out, this image-based approach was well received
-              by many more people than the intended audience thanks to its low
-              barrier to involvement and the sense of fun brought by images
-              rather than the traditional long questions.</p>
-              <p>In order to keep the tool accessible but build on the ease of
-              use we started with a basic, functional version of the test using
-              only HTML forms. We then used JavaScript to make it run more
-              smoothly by preloading images and using <abbr
-              title="XMLHttpRequest">XHR</abbr> to report choices back to the
-              server.</p>
-            </li>
-            <li>
-              <img src="images/yourpreferences/pdf.png" height="465" width="620" alt="">
-              <h3>Generated PDFs</h3>
-              <p>To allow people to easily save, email and print their reports
-              we generate both an online HTML version, and a downloadable PDF
-              version with the option to have it emailed to you.</p>
-              <p>Two interesting constraints that arose from these dual-format
-              reports were the need for multiple source images — one small
-              bitmap image for the HTML report, and one large bitmap or vector
-              image for the PDF report — and the need to have the branding and
-              styling of the reports feel similar, whilst also playing to the
-              strengths of the medium.</p>
-            </li>
-            <li>
-              <img src="images/yourpreferences/admin.png" height="465" width="620" alt="">
-              <h3>Admin Interface</h3>
-              <p>The app uses a two-tier admin system for inviting and managing
-              people, teams and companies, and editing and creating reports.
-              Since the second tier admin functions (managing the creation and
-              permissions of people and teams) are available to companies using
-              the system they must be robust and easy to use.</p>
-              <p>I used a drag-drop interface for managing the permissions for
-              each report. This concept is reused across all the forms where
-              permissions are set: creating, inviting and editing of people,
-              groups and companies.</p>
-            </li>
-          </ul>
-        </div>
-      </div>
-      <div id="iportfolio">
-        <h2>i-Portfolio</h2>
-        <div class="scroll-wrapper">
-          <ul class="project-detail">
-            <li>
-              <img src="images/iportfolio/test.png" height="465" width="620" alt="">
-              <h3>Toolkit Tests</h3>
-              <p>One of the unique features of the site was a set of four tests
-              which, combined with a detailed set of criteria and values for
-              700+ jobs, allowed us to make useful suggestions about careers
-              which may interest you.</p>
-              <p>The tests needed to be accessible, so I created them in a
-              basic state as large HTML forms. Using JavaScript I then created
-              a "front" to the form, providing an intuitive interface making
-              the tests a lot more fun.</p>
-              <p>In order to make code maintenance easier, I kept as much
-              shared functionality from the four tests as I could in a single
-              object, extending it to work with the specifics of each case.</p>
-            </li>
-            <li>
-              <img src="images/iportfolio/skins.png" height="465" width="620" alt="">
-              <h3>Skinning</h3>
-              <p>This site was built in association with several education
-              organisations, such as UCAS, City &amp; Guilds and learndirect.
-              Some of these organisations had skinned versions of the site
-              available on a subdomain for users directed into the system from
-              their online tools.</p> <p>In order to keep the impact of
-              skinning on maintenance and development effort as low as possible
-              we designed and built the site with a strict definition of what
-              skinning could alter. The end result was a site which carried the
-              logo and brand colours of the partner, yet still had the high
-              quality user experience we had designed for.</p>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </div>
     <script type="text/javascript">
       try {
         _gat._getTracker("UA-267102-13")._trackPageview();
