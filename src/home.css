@@ -1,0 +1,624 @@
+/* Dominic Baggott — the cover of the specimen book.
+   Bodoni Moda on plain paper is the quiet frame. Each card is set in its own
+   specimen's faces and colours, using the font files from that specimen's
+   folder. Plain elements, no classes: a card is picked out by where it links.
+   See README.md for how to add one. */
+
+@font-face {
+  font-family: "Cover Bodoni";  /* own name, so an installed Bodoni Moda can never stand in */
+  src: url("fonts/bodoni-moda.woff2") format("woff2");
+  font-weight: 400 900;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Cover Bodoni";
+  src: url("fonts/bodoni-moda-italic.woff2") format("woff2");
+  font-weight: 400 900;
+  font-style: italic;
+  font-display: swap;
+}
+
+/* The cards borrow each specimen's own font files */
+@font-face {
+  font-family: "Card Martian";
+  src: url("when-bottlenecks-move/fonts/martian-mono.woff2") format("woff2");
+  font-weight: 300 800;
+  font-stretch: 75% 112.5%;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Card Fraunces";
+  src: url("when-bottlenecks-move/fonts/fraunces-italic.woff2") format("woff2");
+  font-style: italic;
+  font-weight: 300 900;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Card Unbounded";
+  src: url("everything-a-prediction-touches/fonts/unbounded.woff2") format("woff2");
+  font-weight: 200 900;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Card Archivo";
+  src: url("thoughts-on-recording-thoughts/fonts/archivo.woff2") format("woff2");
+  font-weight: 100 900;
+  font-stretch: 62% 125%;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Card Besley";
+  src: url("thoughts-on-recording-thoughts/fonts/besley.woff2") format("woff2");
+  font-weight: 400 900;
+  font-display: swap;
+}
+
+:root {
+  --paper: #F1EEE6;
+  --ink: #15140F;
+  --pad: clamp(1rem, 5vw, 4.5rem);
+  --label: 500 0.8125rem/1.4 var(--serif);
+  --serif: "Cover Bodoni", Didot, "Bodoni 72", Georgia, serif;
+}
+
+* { box-sizing: border-box; }
+
+html {
+  background: var(--paper);
+  color: var(--ink);
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  padding: 0 var(--pad);
+  font-family: var(--serif);
+  font-optical-sizing: auto;
+  font-synthesis: none;
+}
+
+a {
+  color: inherit;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+}
+
+::selection { background: var(--ink); color: var(--paper); }
+
+/* ---- Running head -------------------------------------------------------- */
+
+body > header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.5rem 1.5rem;
+  padding: 1.75rem 0;
+  border-bottom: 1px solid var(--ink);
+  font: var(--label);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+body > header p { margin: 0; }
+body > header a { padding: 0.5rem 0; text-decoration: none; }
+body > header a:hover { text-decoration: underline; }
+
+/* ---- Title page: three tiers, like a Victorian specimen book ------------- */
+
+h1 {
+  margin: clamp(3rem, 7vw, 7rem) 0 0;
+  font-size: clamp(3.75rem, 12vw, 12rem);
+  font-weight: 800;
+  line-height: 0.88;
+  letter-spacing: -0.03em;
+}
+h1 span { display: block; }
+h1 span:first-of-type {
+  margin-top: 0.08em;
+  font-size: 0.5em;
+  font-style: italic;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+h1 span:last-of-type {
+  margin-top: 0.6em;
+  font-size: max(0.9375rem, 0.16em);
+  font-weight: 500;
+  line-height: 1.2;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+}
+
+main > p {
+  max-width: 34em;
+  margin: 0 0 0.8em;
+  font-size: clamp(1.125rem, 1.5vw, 1.375rem);
+  line-height: 1.5;
+}
+h1 + p { margin-top: clamp(2rem, 4vw, 3.5rem); }
+
+/* Running text is pinned near Bodoni Moda's small-text optical size, so its
+   hairlines hold up on a phone. Headings and labels keep the automatic
+   optical size. */
+main > p,
+#contact p,
+#short-version dl,
+body > footer p:last-child {
+  font-variation-settings: "opsz" 8;
+}
+
+/* ---- The specimens ---------------------------------------------------------
+   Cards shrink to about 380px before the grid drops to one column, and sit
+   three across at full width once there are three of them. */
+
+main > ul {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 23.75rem), 1fr));
+  grid-auto-rows: clamp(35rem, 46vw, 43.75rem);
+  gap: clamp(1rem, 2vw, 1.5rem);
+  margin: clamp(3.5rem, 7vw, 6.5rem) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+main > ul > li {
+  position: relative;
+  overflow: hidden;
+  container-type: inline-size;
+}
+
+main > ul > li > article {
+  --inset: clamp(1.25rem, 6cqi, 2.5rem);
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  padding: var(--inset);
+  /* Clipped at its own edge, not just the card's: the REPLICATE spine runs
+     far off the top, and Safari would otherwise redraw all of it on every
+     frame of the hover, and flash white while it caught up. */
+  overflow: hidden;
+  transform-origin: 50% 50%;
+  transition: transform 0.4s ease;
+  will-change: transform;
+}
+/* On hover the card zooms in a touch, so everything bleeds a little further
+   off its edges. Nothing reflows: it's a transform, clipped by the card. */
+main > ul > li:hover > article,
+main > ul > li:has(h2 a:focus-visible) > article { transform: scale(1.035); }
+
+/* The title's link covers the whole card. Nothing between the link and the
+   article may be positioned, or the cover shrinks to that element. */
+main > ul > li h2 a { text-decoration: none; outline: none; }
+main > ul > li h2 a::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+main > ul > li:has(h2 a:focus-visible) {
+  outline: 3px solid var(--ink);
+  outline-offset: 4px;
+}
+
+/* Each card's top line: specimen code, then kind */
+main > ul > li > article > p:first-child {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin: 0;
+}
+
+/* ---- #1A2CFF · When bottlenecks move ------------------------------------ */
+
+/* the ground goes on the card too, so it shows if a frame ever lags */
+li:has(> article [href^="when-bottlenecks-move"]),
+li:has(> article [href^="when-bottlenecks-move"]) > article {
+  background: #1A2CFF;
+}
+li:has(> article [href^="when-bottlenecks-move"]) > article {
+  color: #FFFFFF;
+  font-family: "Card Martian", ui-monospace, "SF Mono", Menlo, monospace;
+  font-stretch: 87.5%;
+}
+li:has(> article [href^="when-bottlenecks-move"]) > article > p:first-child {
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+li:has(> article [href^="when-bottlenecks-move"]) > article > p:first-child span:first-child::before {
+  content: "";
+  display: inline-block;
+  width: 0.7em;
+  height: 0.7em;
+  margin-right: 0.8em;
+  border-radius: 50%;
+  background: #FFD400;
+}
+li:has(> article [href^="when-bottlenecks-move"]) h2 {
+  margin: clamp(2rem, 7cqi, 3rem) 0 0;
+  /* sized so “bottlenecks” plus the cursor fits the card at full width */
+  font-size: clamp(2rem, 11.25cqi, 5rem);
+  font-weight: 800;
+  font-stretch: 112.5%;
+  line-height: 0.92;
+  letter-spacing: -0.06em;
+  white-space: nowrap;
+}
+/* the cursor */
+li:has(> article [href^="when-bottlenecks-move"]) h2::after {
+  content: "";
+  display: inline-block;
+  width: 0.55em;
+  height: 0.78em;
+  margin-left: 0.12em;
+  vertical-align: -0.04em;
+  background: #FFD400;
+}
+li:has(> article [href^="when-bottlenecks-move"]) h2 + p {
+  max-width: 30em;
+  margin: auto 0 0;
+  font-size: clamp(0.9375rem, 3cqi, 1.1875rem);
+  font-weight: 400;
+  line-height: 1.5;
+  letter-spacing: -0.02em;
+}
+li:has(> article [href^="when-bottlenecks-move"]) em {
+  font-family: "Card Fraunces", Georgia, serif;
+  font-style: italic;
+  word-spacing: 0.25em;  /* as on the piece: Fraunces’ word space is tiny beside Martian’s */
+  font-weight: 900;
+  font-size: 1.32em;
+  line-height: 1;
+  letter-spacing: -0.01em;
+  color: #FFD400;
+}
+/* The piece's two diagrams, scaled so the long one fills the card's width:
+   79 characters of 0.6em at the narrowest width */
+li:has(> article [href^="when-bottlenecks-move"]) pre {
+  margin: clamp(1.25rem, 5cqi, 2rem) 0 0;
+  font-family: inherit;
+  font-size: calc((100cqi - 2 * var(--inset)) / 47.6);
+  font-weight: 500;
+  font-stretch: 75%;
+  line-height: 1.6;
+  color: #FFD400;
+}
+li:has(> article [href^="when-bottlenecks-move"]) pre::first-line { color: #FFFFFF; }
+li:has(> article [href^="when-bottlenecks-move"]) pre + pre { margin-top: 0.75rem; }
+@container (max-width: 32.5rem) {
+  li:has(> article [href^="when-bottlenecks-move"]) pre { display: none; }
+}
+
+/* The pager prompt: the card is the piece's first screenful, as `more` would
+   show it. 4% is the opening paragraph's share of the piece's words. */
+li:has(> article [href^="when-bottlenecks-move"]) > article::after {
+  content: "--More--(4%)" / "";
+  align-self: flex-start;
+  margin-top: clamp(1rem, 4cqi, 1.5rem);
+  padding: 0 0.3em;
+  background: #FFFFFF;
+  color: #1A2CFF;
+  font-size: clamp(0.9375rem, 3cqi, 1.1875rem);
+  font-weight: 500;
+  line-height: 1.5;
+}
+
+/* ---- #F4E409 · Everything a prediction touches -------------------------- */
+
+li:has(> article [href^="everything-a-prediction-touches"]),
+li:has(> article [href^="everything-a-prediction-touches"]) > article {
+  background: #F4E409;
+}
+li:has(> article [href^="everything-a-prediction-touches"]) > article {
+  padding-left: clamp(6.875rem, 27cqi, 11.25rem);
+  color: #3D3800;
+  font-family: "Card Unbounded", system-ui, sans-serif;
+}
+/* the REPLICATE spine */
+li:has(> article [href^="everything-a-prediction-touches"]) > article::before {
+  content: "Replicate" / "";
+  position: absolute;
+  left: -0.14em;
+  bottom: 0;
+  height: 100%;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  /* cqw, not cqi: in vertical writing the inline axis is the card's height */
+  font-size: clamp(7.5rem, 30cqw, 12.5rem);
+  font-weight: 900;
+  line-height: 0.8;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+li:has(> article [href^="everything-a-prediction-touches"]) > article > p:first-child {
+  padding-bottom: 0.625rem;
+  border-bottom: 3px solid currentColor;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+li:has(> article [href^="everything-a-prediction-touches"]) h2 {
+  margin: clamp(1.5rem, 6cqi, 2.5rem) 0 0;
+  font-size: clamp(1.25rem, 6.8cqi, 2.75rem);
+  font-weight: 900;
+  line-height: 0.98;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+}
+/* the tour paragraph, set as the piece sets its body text: Unbounded Light,
+   with the note numbers in ExtraBold */
+li:has(> article [href^="everything-a-prediction-touches"]) h2 + p {
+  margin: auto 0 0;
+  font-size: clamp(0.8125rem, 2.8cqi, 1.0625rem);
+  font-weight: 300;
+  line-height: 1.6;
+}
+li:has(> article [href^="everything-a-prediction-touches"]) h2 + p sup {
+  font-size: 0.68em;
+  font-weight: 800;
+  line-height: 0;
+}
+/* the figures row */
+li:has(> article [href^="everything-a-prediction-touches"]) ul {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.75rem;
+  margin: clamp(1.25rem, 5cqi, 2rem) 0 0;
+  padding: 0.75rem 0;
+  border-block: 3px solid currentColor;
+  list-style: none;
+  font-size: 0.625rem;
+  font-weight: 500;
+  line-height: 1.35;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+li:has(> article [href^="everything-a-prediction-touches"]) ul strong {
+  display: block;
+  margin-bottom: 0.375rem;
+  font-size: clamp(1.125rem, 5cqi, 2.25rem);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+}
+li:has(> article [href^="everything-a-prediction-touches"]) ul li:nth-child(1) strong { font-weight: 200; }
+li:has(> article [href^="everything-a-prediction-touches"]) ul li:nth-child(2) strong { font-weight: 500; }
+li:has(> article [href^="everything-a-prediction-touches"]) ul li:nth-child(3) strong { font-weight: 900; }
+/* a note under the figures, set as the piece sets its notes, answering the
+   excerpt's markers: the rest is in the piece */
+li:has(> article [href^="everything-a-prediction-touches"]) ul + p {
+  margin: 0.75rem 0 0;
+  font-size: 0.75rem;
+  font-weight: 400;
+  line-height: 1.6;
+  text-wrap: pretty;
+}
+li:has(> article [href^="everything-a-prediction-touches"]) ul + p b { font-weight: 900; }
+/* On the narrowest cards (phones about 375px wide and under) the spine
+   gives up some width, so the title, tour, figures and note all fit */
+@container (max-width: 21.5rem) {
+  li:has(> article [href^="everything-a-prediction-touches"]) > article { padding-left: 5.5rem; }
+  li:has(> article [href^="everything-a-prediction-touches"]) > article::before { font-size: 6.25rem; }
+  li:has(> article [href^="everything-a-prediction-touches"]) ul { gap: 0.5rem; }
+}
+
+/* ---- #E8431C · Thoughts on recording thoughts ---------------------------- */
+
+li:has(> article [href^="thoughts-on-recording-thoughts"]),
+li:has(> article [href^="thoughts-on-recording-thoughts"]) > article {
+  background: #E8431C;
+}
+li:has(> article [href^="thoughts-on-recording-thoughts"]) > article {
+  --card: #F6E9D6;
+  --label: clamp(1rem, 5cqi, 1.75rem);  /* the label's side padding */
+  color: #1E0B04;
+  font-family: "Card Archivo", "Helvetica Neue", Arial, sans-serif;
+}
+li:has(> article [href^="thoughts-on-recording-thoughts"]) > article > p:first-child {
+  font-size: 0.75rem;
+  font-weight: 700;
+  font-stretch: 75%;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+/* the cassette label: the title as a waveform, every letter its own weight,
+   width and height, as on the specimen's own page */
+li:has(> article [href^="thoughts-on-recording-thoughts"]) h2 {
+  margin: clamp(1.5rem, 6cqi, 2.5rem) 0 0;
+  padding: var(--label) var(--label) calc(var(--label) * 0.8);
+  background: var(--card);
+  border-radius: 0.375rem 0.375rem 0 0;
+  line-height: 1;
+  text-transform: uppercase;
+}
+li:has(> article [href^="thoughts-on-recording-thoughts"]) h2 a > span {
+  display: block;
+  /* 17% and 12% of the label's width, as on the page */
+  font-size: calc((100cqi - 2 * var(--inset) - 2 * var(--label)) * 0.17);
+  white-space: nowrap;
+}
+li:has(> article [href^="thoughts-on-recording-thoughts"]) h2 a > span:nth-child(2) {
+  margin: 0.08em 0 0.12em;
+  font-size: calc((100cqi - 2 * var(--inset) - 2 * var(--label)) * 0.12);
+}
+li:has(> article [href^="thoughts-on-recording-thoughts"]) h2 span span {
+  display: inline-block;
+  font-weight: var(--w);
+  font-stretch: calc(var(--s) * 1%);
+  transform: scaleY(calc(0.7 + 0.5 * var(--a)));
+  transform-origin: 50% 64%;
+}
+/* the strip: Side A, the whole piece as one waveform, the running time */
+li:has(> article [href^="thoughts-on-recording-thoughts"]) h2 + p {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 0;
+  padding: 0.55rem var(--label);
+  background: #1E0B04;
+  color: var(--card);
+  border-radius: 0 0 0.375rem 0.375rem;
+  font-size: 0.6875rem;
+  font-weight: 800;
+  font-stretch: 75%;
+  line-height: 1.4;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+li:has(> article [href^="thoughts-on-recording-thoughts"]) h2 + p span { flex: none; }
+li:has(> article [href^="thoughts-on-recording-thoughts"]) h2 + p svg {
+  flex: 1;
+  min-width: 0;
+  height: 1.75rem;
+  fill: var(--card);
+}
+li:has(> article [href^="thoughts-on-recording-thoughts"]) h2 + p span:last-child {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  font-stretch: 100%;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.3em;
+  padding: 0.05em 0.05em 0.05em 0.35em;
+  border: 2px solid var(--card);
+  border-radius: 0.2rem;
+}
+/* the excerpt, in Besley, with its place on the tape: a play button, the
+   counter and the progress bar, as in the piece's gutter */
+li:has(> article [href^="thoughts-on-recording-thoughts"]) h2 + p + p {
+  position: relative;
+  max-width: 30em;
+  margin: auto 0 0;
+  padding-top: clamp(1.25rem, 5cqi, 2rem);
+  font-family: "Card Besley", Rockwell, Georgia, serif;
+  font-size: clamp(0.9375rem, 3cqi, 1.1875rem);
+  line-height: 1.55;
+}
+li:has(> article [href^="thoughts-on-recording-thoughts"]) h2 + p + p::before {
+  content: "00:17" / "";
+  display: block;
+  width: 5.5rem;
+  margin-bottom: 0.75rem;
+  padding: 0 0 0.4rem 1.1rem;
+  font-family: "Card Archivo", "Helvetica Neue", Arial, sans-serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  font-stretch: 75%;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.08em;
+  line-height: 1.4;
+  /* 17 seconds into 5:19 */
+  background:
+    linear-gradient(#1E0B04, #1E0B04) no-repeat 0 100% / 5.3% 3px,
+    linear-gradient(rgba(30, 11, 4, 0.22), rgba(30, 11, 4, 0.22)) no-repeat 0 100% / 100% 3px;
+}
+li:has(> article [href^="thoughts-on-recording-thoughts"]) h2 + p + p::after {
+  content: "";
+  position: absolute;
+  top: calc(clamp(1.25rem, 5cqi, 2rem) + 0.21rem);
+  left: 0;
+  width: 0.5rem;
+  height: 0.55rem;
+  background: #1E0B04;
+  clip-path: polygon(0 0, 100% 50%, 0 100%);
+}
+/* what's left on the tape: 5:19 less the 17 seconds the counter has run */
+li:has(> article [href^="thoughts-on-recording-thoughts"]) > article::after {
+  content: "5:02 left on Side A" / "";
+  margin-top: 1rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  font-stretch: 75%;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* ---- Contact, the short version and the colophon ------------------------- */
+
+#contact,
+#short-version,
+body > footer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 1rem 3rem;
+  border-top: 1px solid var(--ink);
+}
+
+#contact {
+  margin-top: clamp(4.5rem, 9vw, 8.5rem);
+  padding-top: 1.25rem;
+}
+#contact h2,
+#short-version h2,
+body > footer p:first-child {
+  margin: 0;
+  font: var(--label);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+#contact div {
+  flex: 0 1 34em;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+#contact p {
+  margin: 0;
+  font-size: clamp(1.375rem, 2.2vw, 2rem);
+  font-weight: 500;
+  line-height: 1.3;
+}
+#contact p + p {
+  font-size: clamp(1.25rem, 1.8vw, 1.625rem);
+  font-style: italic;
+  overflow-wrap: anywhere;
+}
+
+/* The career in one breath, for anyone who just wants the names: set like
+   the plain price list at the back of a specimen book */
+#short-version {
+  margin-top: clamp(3.5rem, 7vw, 6.5rem);
+  padding-top: 1.25rem;
+}
+#short-version dl {
+  flex: 0 1 34rem;  /* rem, so it lines up with the contact column above */
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 0.5rem 1.5rem;
+  margin: 0;
+  font-size: clamp(1.0625rem, 1.4vw, 1.25rem);
+  line-height: 1.35;
+}
+#short-version dt { font-weight: 600; }
+#short-version dd {
+  margin: 0;
+  font-style: italic;
+}
+/* on a phone each name sits over its line */
+@media (max-width: 30rem) {
+  #short-version dl {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+  #short-version dd + dt { margin-top: 0.75rem; }
+}
+
+body > footer {
+  margin-top: clamp(3.5rem, 7vw, 6.5rem);
+  padding: 1.25rem 0 2.5rem;
+  font-size: 0.875rem;
+  line-height: 1.6;
+}
+body > footer p { margin: 0; }
+body > footer p:last-child { max-width: 44em; }
+
+@media (prefers-reduced-motion: reduce) {
+  main > ul > li > article { transition: none; }
+}

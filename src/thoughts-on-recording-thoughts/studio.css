@@ -1,0 +1,317 @@
+/* Thoughts on recording thoughts — Studio
+   Archivo for the label and the machinery, Besley for the words, on cassette
+   orange. Plain elements only, no classes; see README.md for what maps to
+   what.
+   The title is the label on a home-taped cassette, set as a waveform. The
+   strip under it holds the whole piece as one waveform and its running time.
+   The gutter runs a tape counter and a progress bar: where you'd be if you
+   read the piece aloud. The lines that were said out loud are in Besley
+   Italic. The footnote is the B-side. */
+
+@font-face {
+  font-family: "Studio Archivo";  /* own name, so an installed Archivo can never stand in */
+  src: url("fonts/archivo.woff2") format("woff2");
+  font-weight: 100 900;
+  font-stretch: 62% 125%;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Studio Besley";  /* own name, so an installed Besley can never stand in */
+  src: url("fonts/besley.woff2") format("woff2");
+  font-weight: 400 900;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Studio Besley";
+  src: url("fonts/besley-italic.woff2") format("woff2");
+  font-weight: 400 900;
+  font-style: italic;
+  font-display: swap;
+}
+
+:root {
+  --ground: #E8431C;
+  --ink: #1E0B04;
+  --card: #F6E9D6;
+  --line: rgba(30, 11, 4, 0.22);   /* the unplayed part of a progress bar */
+
+  --pad: clamp(1.25rem, 5vw, 5rem);
+  --gutter: 6.5rem;
+  --gap: 2.5rem;
+  --measure: 37rem;
+  --lh: 1.95rem;    /* one line of body text */
+
+  --face: "Studio Archivo", "Helvetica Neue", Arial, sans-serif;
+  --text: "Studio Besley", Rockwell, Georgia, serif;
+}
+
+* { box-sizing: border-box; }
+
+html {
+  background: var(--ground);
+  color: var(--ink);
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  padding: 0 var(--pad);
+  font-family: var(--face);
+  font-size: 1.1875rem;
+  font-weight: 400;
+  line-height: var(--lh);
+  font-synthesis: none;
+}
+
+::selection { background: var(--ink); color: var(--ground); }
+
+a {
+  color: inherit;
+  text-decoration-thickness: 0.08em;
+  text-underline-offset: 0.18em;
+}
+
+header,
+article,
+footer {
+  max-width: calc(var(--gutter) + var(--gap) + var(--measure));
+  margin: 0 auto;
+}
+
+/* ---- Running head -------------------------------------------------------- */
+
+header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.5rem 2rem;
+  padding: 2.25rem 0 0;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  font-stretch: 75%;
+  line-height: 1.4;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+header p { margin: 0; }
+header a { text-decoration: none; }
+header a::before { content: "« " / ""; }
+header a:hover { text-decoration: underline; }
+
+/* ---- The inlay card: title and counter --------------------------------- */
+
+h1 {
+  margin: clamp(2.5rem, 6vw, 4.5rem) 0 0;
+  padding: clamp(1.25rem, 3vw, 2rem) clamp(1.25rem, 3vw, 2.25rem) clamp(1rem, 2.5vw, 1.75rem);
+  background: var(--card);
+  border-radius: 0.375rem 0.375rem 0 0;
+  font-weight: 900;
+  line-height: 0.86;
+  text-transform: uppercase;
+  container-type: inline-size;
+}
+/* Three lines, each a waveform: every letter's weight, width and height
+   (build.mjs sets --w, --s and --a) swell and fade along its line. The long
+   middle line is set smaller so all three fill the label. */
+h1 > span {
+  display: block;
+  font-size: 17cqi;
+  line-height: 1;
+  white-space: nowrap;
+}
+h1 > span:nth-child(2) { font-size: 12cqi; margin: 0.08em 0 0.12em; }
+h1 span span {
+  display: inline-block;
+  font-weight: var(--w);
+  font-stretch: calc(var(--s) * 1%);
+  /* scaled about the middle of the capitals, like a waveform about its centre line */
+  transform: scaleY(calc(0.7 + 0.5 * var(--a)));
+  transform-origin: 50% 64%;
+}
+
+/* the strip under it: Side A, the whole piece as one waveform, the counter */
+h1 + p {
+  display: flex;
+  align-items: center;
+  gap: clamp(0.75rem, 2.5vw, 1.5rem);
+  margin: 0 0 clamp(3rem, 6vw, 4.5rem);
+  padding: 0.7rem clamp(1.25rem, 3vw, 2.25rem);
+  background: var(--ink);
+  color: var(--card);
+  border-radius: 0 0 0.375rem 0.375rem;
+  font-size: 0.875rem;
+  font-weight: 800;
+  font-stretch: 75%;
+  line-height: 1.4;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+h1 + p span { flex: none; }
+h1 + p svg {
+  flex: 1;
+  min-width: 0;
+  height: 2.25rem;
+  fill: var(--card);
+}
+/* the counter's digits, each in its own window */
+h1 + p span:last-child {
+  font-size: 1.25rem;
+  font-weight: 600;
+  font-stretch: 100%;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.32em;
+  padding: 0.05em 0.1em 0.05em 0.42em;
+  border: 2px solid var(--card);
+  border-radius: 0.2rem;
+}
+
+/* ---- Text ---------------------------------------------- */
+
+article > p:not(h1 + p) {
+  position: relative;
+  max-width: var(--measure);
+  margin: 0 0 1.75rem;
+  font-family: var(--text);
+  font-size: 1.125rem;
+  line-height: 1.7;
+}
+
+/* the lede, a little louder */
+article > h1 + p + p {
+  font-size: clamp(1.3125rem, 2vw, 1.5rem);
+  font-weight: 500;
+  line-height: 1.5;
+}
+
+/* the closing paragraph */
+article > p:last-of-type {
+  margin-top: 2.5rem;
+  font-size: clamp(1.375rem, 2.6vw, 1.75rem);
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+/* the words that were said out loud */
+em { font-style: italic; }
+
+/* The counter, with a play button before it and a progress bar under it.
+   On narrow screens they sit above the paragraph; on wide ones, in the gutter. */
+article > p:not(h1 + p)::before {
+  content: var(--t) / "";
+  display: block;
+  width: var(--gutter);
+  margin-bottom: 0.5rem;
+  font-family: var(--face);
+  font-style: normal;
+  padding-left: 1.1rem;
+  font-size: 0.875rem;
+  font-weight: 700;
+  font-stretch: 75%;
+  line-height: calc(var(--lh) - 0.5rem);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.08em;
+  /* the progress bar: played, then still to play */
+  padding-bottom: 0.5rem;
+  background:
+    linear-gradient(var(--ink), var(--ink)) no-repeat 0 100% / calc(var(--pos) * 100%) 3px,
+    linear-gradient(var(--line), var(--line)) no-repeat 0 100% / 100% 3px;
+}
+article > p:not(h1 + p)::after {
+  content: "";
+  position: absolute;
+  top: calc((var(--lh) - 0.5rem) / 2 - 0.3rem);
+  left: 0;
+  width: 0.55rem;
+  height: 0.6rem;
+  background: var(--ink);
+  clip-path: polygon(0 0, 100% 50%, 0 100%);
+}
+
+sup { font-size: 0.65em; font-weight: 900; line-height: 0; }
+sup a { text-decoration: none; }
+
+/* ---- Side B: the note ----------------------------------------------------- */
+
+section {
+  max-width: var(--measure);
+  margin-top: calc(var(--lh) * 2);
+  padding: 1.25rem 1.5rem 1.5rem;
+  background: var(--card);
+  border-radius: 0.375rem;
+  font-family: var(--text);
+  font-size: 1rem;
+  line-height: 1.6;
+}
+section h2 {
+  margin: 0 0 0.75rem;
+  font-family: var(--face);
+  font-size: 0.875rem;
+  font-weight: 800;
+  font-stretch: 75%;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+section p { margin: 0; }
+section p b { font-weight: 900; margin-right: 0.25em; }
+a[role="doc-backlink"] { text-decoration: none; }
+
+/* ---- Wide screens: the counter hangs in the gutter ------------------------ */
+
+@media (min-width: 52rem) {
+  article {
+    display: grid;
+    grid-template-columns: var(--gutter) minmax(0, var(--measure));
+    column-gap: var(--gap);
+  }
+  article > * { grid-column: 1 / -1; }
+  article > p:not(h1 + p),
+  section { grid-column: 2; }
+  article > p:not(h1 + p)::before {
+    position: absolute;
+    top: 0.25rem;
+    margin: 0;
+    left: calc(-1 * (var(--gutter) + var(--gap)));
+  }
+  article > p:not(h1 + p)::after {
+    top: calc(0.25rem + (var(--lh) - 0.5rem) / 2 - 0.3rem);
+    left: calc(-1 * (var(--gutter) + var(--gap)));
+  }
+}
+
+/* ---- Footer ---------------------------------------------------------------- */
+
+footer {
+  margin-top: 4.5rem;
+  padding: 1rem 0 3rem;
+  border-top: 2px solid var(--ink);
+  font-size: 0.875rem;
+  line-height: 1.6;
+}
+footer p { max-width: 40em; margin: 0; }
+
+/* ---- Specimen labels ------------------------------------------------------
+   Generated content with empty alt text, so screen readers skip it. Delete
+   this section to remove them. */
+
+h1::after,
+section::after {
+  display: block;
+  font-family: var(--face);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  font-stretch: 75%;
+  line-height: 1.5;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: pre-line;
+  opacity: 0.7;
+}
+h1::after {
+  content: "Archivo · weight, width and height per letter" / "";
+  margin-top: 1.25rem;
+  font-size: 0.6875rem;
+}
+section::after {
+  content: "Besley Regular · the B-side" / "";
+  margin-top: 1rem;
+}

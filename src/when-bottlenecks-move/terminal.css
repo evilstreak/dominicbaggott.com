@@ -1,0 +1,539 @@
+/* Terminal — styles plain, class-free HTML as rendered from Markdown.
+   Martian Mono does the talking; Fraunces Italic only ever appears as an aside.
+   The specimen labels are generated here too, so the Markdown stays clean. */
+
+/* Martian Mono, with ░ ▒ ▓ drawn into it on its own cell so diagrams line up
+   at any width. */
+@font-face {
+  font-family: "Terminal Martian";  /* own name, so an installed Martian Mono can never stand in */
+  src: url("fonts/martian-mono.woff2") format("woff2");
+  font-weight: 300 800;
+  font-stretch: 75% 112.5%;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Terminal Fraunces";
+  src: url("fonts/fraunces-italic.woff2") format("woff2");
+  font-style: italic;
+  font-weight: 300 900;
+  font-display: swap;
+}
+
+:root {
+  --ground: #1a2cff;
+  --ink: #ffffff;
+  --signal: #ffd400;
+  --aside: #ff9ec7;
+  --quiet: #c9d0ff;
+
+  --pad: 5rem;
+  --gutter: 6rem;
+  --gap: 2.5rem;
+  --measure: 47.5rem;
+  --hang: calc(-1 * (var(--gutter) + var(--gap)));
+
+  --mono: "Terminal Martian", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --serif: "Terminal Fraunces", Georgia, serif;
+}
+
+html {
+  background: var(--ground);
+  color: var(--ink);
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: var(--mono);
+  font-size: 1.0625rem;
+  font-weight: 300;
+  font-stretch: 87.5%;
+  line-height: 1.8;
+}
+
+::selection { background: var(--signal); color: var(--ground); }
+
+a {
+  color: inherit;
+  text-decoration-color: var(--signal);
+  text-decoration-thickness: 0.1em;
+  text-underline-offset: 0.2em;
+}
+a:hover { color: var(--signal); }
+
+/* ---- Page frame ---------------------------------------------------------- */
+
+header,
+article,
+aside,
+footer {
+  max-width: 80rem;
+  margin: 0 auto;
+  padding: 0 var(--pad);
+}
+
+header {
+  padding-top: 3.5rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.75rem 2rem;
+}
+header p { margin: 0; }
+header a { text-decoration: none; }
+header a::before { content: "← " / ""; }
+header a:hover { color: var(--signal); }
+header p::before {
+  content: "";
+  display: inline-block;
+  width: 0.7em;
+  height: 0.7em;
+  margin-right: 0.8em;
+  border-radius: 50%;
+  background: var(--signal);
+}
+
+article {
+  container-type: inline-size;
+  display: grid;
+  grid-template-columns: var(--gutter) minmax(0, 1fr);
+  column-gap: var(--gap);
+  counter-reset: para fig;
+  padding-bottom: 6rem;
+}
+article > * {
+  grid-column: 2;
+  margin: 0 0 3rem;
+}
+
+/* ---- Specimen labels ------------------------------------------------------
+   Generated text with empty alt text (the “/ ""”), so screen readers skip it.
+   Browsers without that syntax drop the rule and simply show no label. */
+
+h1::before,
+h1 + p::after,
+h1 + p + p::after,
+article > p:has(strong)::after,
+article > p:has(em):not(h1 + p)::after,
+pre:first-of-type::after,
+hr:first-of-type::after,
+h2:first-of-type::after,
+ul:first-of-type::after {
+  display: block;
+  font-family: var(--mono);
+  font-size: 0.6875rem;
+  font-style: normal;
+  font-weight: 400;
+  font-stretch: 75%;
+  line-height: 1.7;
+  letter-spacing: 0;
+  text-transform: none;
+  white-space: pre-line;
+  color: var(--quiet);
+}
+
+h1::before {
+  content: "Martian Mono ExtraBold · wdth 112.5 · set lowercase" / "";
+  position: absolute;
+  top: calc(100% + 1.75rem);
+  left: 0;
+}
+h1 + p::after {
+  content: "Martian Mono 400 · emphasis swaps face: Fraunces Black Italic, Soft 100, Wonk 1" / "";
+  margin-top: 1rem;
+}
+h1 + p + p::after {
+  content: "Martian Mono Light 300\A wdth 87.5 · 17 / 30" / "";
+}
+article > p:has(strong)::after {
+  content: "strong — Martian Mono ExtraBold\A wdth 112.5" / "";
+}
+article > p:has(em):not(h1 + p)::after {
+  content: "em — Fraunces Italic\A Soft 100 · Wonk 1" / "";
+}
+pre:first-of-type::after {
+  content: "ASCII as written · block characters drawn into Martian Mono · bar line coloured by ::first-line" / "";
+  margin-top: 0.75rem;
+  white-space: normal;
+}
+hr:first-of-type::after {
+  content: "asterism, built from\A three Fraunces asterisks" / "";
+  position: absolute;
+  top: 50%;
+  left: 7rem;
+}
+h2:first-of-type::after {
+  content: "Martian Mono ExtraBold · wdth 112.5 · ## hung in the gutter" / "";
+  margin-top: 1rem;
+}
+ul:first-of-type::after {
+  content: "list — Martian Mono asterisks hung in the gutter" / "";
+  margin-top: 1rem;
+}
+
+/* only the first paragraph with emphasis, and the first with strong, is labelled */
+article > p:has(strong) ~ p:has(strong)::after,
+article > p:has(em):not(h1 + p) ~ p:has(em)::after { content: none !important; }
+
+/* paragraph labels sit below the text by default, in the right margin when there’s room */
+article > p::after { margin-top: 0.75rem; }
+
+@container (min-width: 74rem) {
+  article > p:not(h1 + p)::after {
+    position: absolute;
+    top: 0.35em;
+    left: calc(100% + 2.5rem);
+    width: 16rem;
+    margin: 0;
+  }
+}
+
+/* ---- Title --------------------------------------------------------------- */
+
+/* narrow enough that every word takes its own line, with slack for “bottlenecks” */
+h1 {
+  grid-column: 1 / -1;
+  position: relative;
+  max-width: 9.5em;
+  margin: 7.5rem 0 8rem;
+  font-size: min(9.375rem, 100cqi / 8.2);
+  font-weight: 800;
+  font-stretch: 112.5%;
+  line-height: 0.92;
+  letter-spacing: -0.06em;
+  text-transform: lowercase;
+  -webkit-hyphens: none;  /* ignore the &shy; in “bottlenecks” until phone widths */
+  hyphens: none;
+}
+h1::after {
+  content: "";
+  display: inline-block;
+  width: 0.55em;
+  height: 0.78em;
+  margin-left: 0.12em;
+  vertical-align: -0.04em;
+  background: var(--signal);
+}
+
+/* ---- Paragraphs, numbered in the gutter ---------------------------------- */
+
+article > p {
+  position: relative;
+  max-width: var(--measure);
+  counter-increment: para;
+  text-wrap: pretty;
+}
+article > p::before {
+  content: counter(para, decimal-leading-zero);
+  content: counter(para, decimal-leading-zero) / "";
+  position: absolute;
+  left: var(--hang);
+  font-size: 0.875rem;
+  font-weight: 400;
+  letter-spacing: 0;
+  color: var(--signal);
+}
+
+/* The first paragraph is the lede: wider, larger, heavier */
+h1 + p {
+  max-width: 65rem;
+  font-size: 1.75rem;
+  font-weight: 400;
+  line-height: 1.45;
+  letter-spacing: -0.02em;
+}
+h1 + p::before { top: 0.75rem; }
+
+/* ---- Inline asides ------------------------------------------------------- */
+
+em {
+  font-family: var(--serif);
+  font-style: italic;
+  font-weight: 500;
+  font-size: 1.2em;
+  line-height: 1;
+  /* Fraunces’ own word space is a fifth of an em, a third of Martian’s cell,
+     so words in an aside ran together; this brings the gaps close to the mono ones */
+  word-spacing: 0.25em;
+  color: var(--aside);
+}
+h1 + p em {
+  font-weight: 900;
+  font-size: 1.32em;
+  letter-spacing: -0.01em;
+  color: var(--signal);
+}
+strong {
+  font-weight: 800;
+  font-stretch: 112.5%;
+  color: var(--signal);
+}
+
+/* ---- Diagrams: ASCII in a pre, labelled in the gutter -------------------- */
+
+pre {
+  position: relative;
+  counter-increment: fig;
+  font-family: var(--mono);
+  /* the long diagram is 79 characters of 0.65em at this width */
+  font-size: min(1.125rem, (100cqi - var(--gutter) - var(--gap)) / 51.6);
+  font-weight: 500;
+  font-stretch: 87.5%;
+  line-height: 1.6;
+  white-space: pre;
+  color: var(--signal);         /* the bar line takes this colour */
+}
+pre::first-line { color: var(--ink); }   /* the label line stays white */
+pre code { font: inherit; }
+pre::before {
+  content: "fig." counter(fig);
+  content: "fig." counter(fig) / "";
+  position: absolute;
+  top: 0.15rem;
+  left: var(--hang);
+  font-size: 0.875rem;
+  font-weight: 400;
+  line-height: 1.6;
+  color: var(--signal);
+}
+
+/* ---- Section break: an asterism built from three Fraunces asterisks ------ */
+
+hr {
+  position: relative;
+  height: auto;
+  margin: 1rem 0 2.5rem;
+  border: 0;
+  overflow: visible;
+  color: var(--signal);
+}
+hr::before {
+  content: "*\A**";
+  content: "*\A**" / "";
+  display: block;
+  width: fit-content;
+  padding-top: 0.3em;
+  font-family: var(--serif);
+  font-style: italic;
+  font-weight: 600;
+  font-size: 5rem;
+  line-height: 0.5;
+  letter-spacing: 0.08em;
+  text-align: center;
+  white-space: pre;
+}
+
+/* ---- Section heading, ## hung in the gutter ------------------------------ */
+
+h2 {
+  position: relative;
+  max-width: 72rem;
+  font-size: 3.5rem;
+  font-weight: 800;
+  font-stretch: 112.5%;
+  line-height: 1.1;
+  letter-spacing: -0.045em;
+  text-wrap: balance;
+}
+h2::before {
+  content: "##";
+  content: "##" / "";
+  position: absolute;
+  left: var(--hang);
+  color: var(--signal);
+}
+
+/* ---- Lists, asterisks hung in the gutter like the paragraph numbers ----- */
+
+article > ul {
+  max-width: var(--measure);
+  padding: 0;
+  list-style: none;
+}
+article > ul li {
+  position: relative;
+  text-wrap: pretty;
+}
+article > ul li + li { margin-top: 1.25rem; }
+article > ul li::before {
+  content: "*";
+  content: "*" / "";
+  position: absolute;
+  left: var(--hang);
+  font-size: 0.875rem;   /* the same size, weight and colour as the paragraph numbers */
+  font-weight: 400;
+  letter-spacing: 0;
+  color: var(--signal);
+}
+
+/* ---- Aside: after the piece and outside it, so commentary on it ----------
+   No number, no specimen label: it isn’t part of the specimen. Fraunces Italic,
+   the face this piece keeps for asides, with “P.S.” hung in the gutter. */
+
+aside {
+  display: grid;
+  grid-template-columns: var(--gutter) minmax(0, 1fr);
+  column-gap: var(--gap);
+  padding-bottom: 6rem;
+}
+aside > * {
+  grid-column: 2;
+  position: relative;
+  max-width: 36rem;
+  margin: 0 0 1.5rem;
+  font-family: var(--serif);
+  font-style: italic;
+  font-weight: 400;
+  font-size: 1.625rem;
+  line-height: 1.35;
+  color: var(--aside);
+  text-wrap: pretty;
+}
+aside > :last-child { margin-bottom: 0; }
+aside > :first-child::before {
+  content: "P.S.";
+  content: "P.S." / "";
+  position: absolute;
+  top: 0.55rem;
+  left: var(--hang);
+  font-family: var(--mono);
+  font-style: normal;
+  font-size: 0.875rem;
+  font-weight: 400;
+  line-height: 1;
+  color: var(--signal);
+}
+aside a { text-decoration-color: currentColor; }
+aside a:hover { color: var(--signal); }
+
+/* ---- Colophon ------------------------------------------------------------ */
+
+footer {
+  padding-bottom: 4rem;
+  font-size: 0.75rem;
+  font-stretch: 75%;
+  color: var(--quiet);
+}
+footer > p {
+  margin: 0;
+  padding-top: 1.75rem;
+  border-top: 1px solid var(--ink);
+}
+footer > div {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 1rem 2rem;
+  margin-top: 2rem;
+  color: var(--ink);
+}
+footer > div p { margin: 0; line-height: 0.85; }
+footer > div p:first-child i { margin-left: 0.25em; }
+footer > div p:first-child {
+  font-size: 12.5rem;
+  font-weight: 800;
+  font-stretch: 112.5%;
+  letter-spacing: -0.06em;
+}
+footer > div p:last-child {
+  font-size: 4rem;
+  font-weight: 400;
+  letter-spacing: 0.25em;
+}
+footer i {
+  font-family: var(--serif);
+  font-style: italic;
+  font-weight: 900;
+  letter-spacing: 0;
+  color: var(--aside);
+}
+footer > div p:last-child i { font-weight: 400; margin-left: 0.5em; }
+
+/* ---- Mid-size screens ---------------------------------------------------- */
+
+@media (max-width: 64rem) {
+  :root { --pad: 2.5rem; --gutter: 3.5rem; --gap: 1.5rem; }
+  h1 { margin: 5rem 0 6rem; }
+  h1 + p { font-size: 1.375rem; }
+  h2 { font-size: 2.75rem; }
+  footer > div p:first-child { font-size: 8rem; }
+  footer > div p:last-child { font-size: 2.5rem; }
+}
+
+/* ---- Phones: the gutter shrinks to a number column; big things go full width */
+
+@media (max-width: 40rem) {
+  :root { --pad: 1.625rem; --gutter: 1.375rem; --gap: 0.875rem; }
+
+  body { font-size: 0.9375rem; line-height: 1.85; }
+  header { padding-top: 1.75rem; font-size: 0.625rem; }
+
+  /* sized so “bottle-” fits but “necks move” doesn’t */
+  h1 {
+    margin: 5rem 0 5.5rem;
+    max-width: none;
+    font-size: calc(100cqi / 5.9);
+    -webkit-hyphens: manual;
+    hyphens: manual;
+  }
+  h1::before { top: calc(100% + 1.25rem); }
+
+  article > p::before { font-size: 0.625rem; top: 0.45em; }
+  article > ul li::before { font-size: 0.625rem; top: 0.45em; }
+
+  h1 + p,
+  pre,
+  h2 { grid-column: 1 / -1; }
+
+  h1 + p { font-size: 1.1875rem; line-height: 1.5; }
+  h1 + p::before {
+    position: static;
+    display: block;
+    margin-bottom: 0.75rem;
+    font-size: 0.6875rem;
+  }
+
+  /* diagrams switch to the narrowest width and scale to fit, 1rem from each edge:
+     79 characters of 0.6em */
+  pre {
+    margin-left: calc(1rem - var(--pad));
+    margin-right: calc(1rem - var(--pad));
+    font-size: calc((100cqi + 2 * var(--pad) - 2rem) / 47.6);
+    font-stretch: 75%;
+  }
+  /* the fig label sits above, out of flow, so ::first-line is still the label line */
+  pre { padding-top: 1.5rem; }
+  pre::before {
+    top: 0;
+    left: 0;
+    font-size: 0.6875rem;
+    line-height: 1;
+  }
+  pre:first-of-type::after { font-size: 0.625rem; }
+
+  hr::before { font-size: 3.5rem; }
+  hr:first-of-type::after { left: 4.75rem; }
+
+  h2 { font-size: 2.125rem; letter-spacing: -0.05em; font-stretch: 100%; }
+  h2::before { position: static; content: "## "; content: "## " / ""; }
+
+  aside > * { grid-column: 1 / -1; font-size: 1.3125rem; }
+  aside > :first-child::before {
+    position: static;
+    display: block;
+    margin-bottom: 0.75rem;
+    font-size: 0.6875rem;
+  }
+
+  footer { font-size: 0.625rem; }
+  footer > div p:first-child { font-size: 5.5rem; }
+  footer > div p:last-child { font-size: 1.75rem; letter-spacing: 0.15em; }
+}

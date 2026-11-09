@@ -1,0 +1,12 @@
+# Cache headers for Cloudflare, which reads this file from build/.
+#
+# By default Cloudflare sends `Cache-Control: public, max-age=0,
+# must-revalidate` with an ETag, so browsers check for a new version of each
+# page and stylesheet every time, and get a quick “not modified” if there
+# isn't one. That's right for HTML and CSS, which keep their names.
+#
+# Fonts have a hash of their contents in their names, so a changed font is a
+# new file, and browsers can keep each one forever.
+
+/*.woff2
+  Cache-Control: public, max-age=31536000, immutable

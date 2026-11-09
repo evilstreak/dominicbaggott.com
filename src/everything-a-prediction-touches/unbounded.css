@@ -1,0 +1,232 @@
+/* Everything a prediction touches — Unbounded
+   Plain elements only, no classes. See README.md for what maps to what. */
+
+@font-face {
+  font-family: "Unbounded";
+  src: url("fonts/unbounded.woff2") format("woff2");
+  font-weight: 200 900;
+  font-display: swap;
+}
+
+:root {
+  --paper: #F4E409;
+  --ink: #3D3800;
+  --rule: 3px solid var(--ink);
+  --hairline: 2px solid var(--ink);
+  --measure: 34rem;   /* body text column */
+  --note: 13rem;      /* sidenote column */
+  --gap: 2.5rem;      /* between them */
+  --wide: calc(var(--measure) + var(--gap) + var(--note));
+  --spine-size: 272px;  /* the vertical REPLICATE */
+  --spine-crop: 24px;   /* how far its E runs off the top */
+  --spine: calc(var(--spine-size) * 0.75 + 2.5rem); /* room for it */
+}
+
+* { box-sizing: border-box; }
+
+html {
+  background: var(--paper);
+  color: var(--ink);
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  position: relative;
+  overflow-x: clip;
+  margin: 0;
+  padding: 2.5rem 1rem 3rem;
+  font: 300 0.95rem/1.68 "Unbounded", system-ui, sans-serif;
+  font-synthesis: none;
+}
+
+a { color: inherit; text-decoration-thickness: 1px; text-underline-offset: 0.2em; }
+a:hover { text-decoration-thickness: 2px; }
+
+article { max-width: var(--measure); margin: 0 auto; }
+
+/* The way back to the homepage */
+header {
+  max-width: var(--measure);
+  margin: 0 auto 2rem;
+  font-size: 0.68rem;
+  font-weight: 600;
+  line-height: 1.4;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+header a { text-decoration: none; }
+header a:hover { text-decoration: underline; }
+/* Unbounded has no arrows, so “back” is its double guillemet */
+header a::before { content: "« " / ""; }
+
+/* Headline */
+h1 {
+  margin: 3.5rem 0 0;
+  font-size: clamp(2rem, 7.5vw, 3.6rem);
+  font-weight: 900;
+  line-height: 0.98;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  text-wrap: balance;
+}
+
+/* The figures row: the list straight after the headline */
+h1 + ul {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+  margin: 3rem 0;
+  padding: 1.1rem 0;
+  border-block: var(--rule);
+  list-style: none;
+  font-size: 0.68rem;
+  font-weight: 500;
+  line-height: 1.35;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+h1 + ul strong {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-size: clamp(1.6rem, 6vw, 2.9rem);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  text-transform: none;
+}
+h1 + ul li:nth-child(1) strong { font-weight: 200; }
+h1 + ul li:nth-child(2) strong { font-weight: 500; }
+h1 + ul li:nth-child(3) strong { font-weight: 900; }
+
+p { margin: 0 0 2.5rem; }
+
+/* The closing line */
+article > p:last-of-type {
+  margin-top: 3.5rem;
+  font-size: clamp(1.35rem, 4.5vw, 1.75rem);
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+
+/* Footnote markers */
+sup { font-size: 0.68em; font-weight: 800; line-height: 0; }
+sup a { text-decoration: none; }
+
+/* Notes: each paragraph's notes, grouped in a <div> straight after it.
+   On narrow screens they sit inline, after their paragraph. */
+article > div {
+  margin: -1.25rem 0 2.5rem;
+  font-size: 0.75rem;
+  font-weight: 400;
+  line-height: 1.6;
+}
+aside[role="doc-footnote"] {
+  padding-top: 0.5rem;
+  border-top: var(--hairline);
+}
+aside[role="doc-footnote"] + aside[role="doc-footnote"] { margin-top: 0.9rem; }
+aside[role="doc-footnote"] b { font-weight: 900; }
+aside[role="doc-footnote"] sup { font-size: 0.8em; }
+a[role="doc-backlink"] { text-decoration: none; }
+
+/* Wide screens: notes in the margin, and the REPLICATE spine */
+@media (min-width: 66rem) {
+  /* Left-aligned, with any spare width to the right. The page is always at
+     least as tall as the spine, so its R always shows at the bottom. */
+  body {
+    min-height: calc(var(--spine-size) * 7.4 - var(--spine-crop));
+    padding: 2.5rem 2.5rem 3rem var(--spine);
+  }
+
+  header { max-width: var(--wide); margin: 0 0 2rem; }
+
+  article {
+    display: grid;
+    grid-template-columns: minmax(0, var(--measure)) var(--note);
+    column-gap: var(--gap);
+    align-items: start;
+    max-width: var(--wide);
+    margin: 0;
+  }
+  article > *,
+  article::before,
+  article::after { grid-column: 1 / -1; }
+
+  article > p { grid-column: 1; }
+  article > p:last-of-type { grid-column: 1 / -1; }
+
+  /* A group of notes sits level with its paragraph, and can run down
+     alongside the next few (build.mjs sets --rows). */
+  article > div {
+    grid-column: 2;
+    grid-row-end: span var(--rows, 1);
+    margin: 0.3rem 0 2.5rem;
+  }
+
+  body::before {
+    content: "Replicate" / "";
+    position: absolute;
+    top: calc(-1 * var(--spine-crop));
+    left: calc(var(--spine-size) * -0.06);
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    font-size: var(--spine-size);
+    font-weight: 900;
+    line-height: 0.8;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+}
+
+/* ---- Specimen labels -------------------------------------------------
+   The small print naming the face and sizes. Generated content with empty
+   alt text, so screen readers skip it. Delete this section to remove it. */
+
+/* Laid out like the homepage card: the code at the left, the kind at the
+   right. One generated string can't be split into two boxes, so the line is
+   justified, which pushes its two words to either end. The space inside the
+   code is a four-per-em space (U+2005), which justification never stretches.
+   Unbounded has no such space, so the browser borrows a blank one from a
+   fallback font; it looks the same. */
+article::before {
+  content: "Specimen\2005#F4E409 Credential" / "";
+  display: block;
+  text-align: justify;
+  text-align-last: justify;
+  padding-bottom: 0.75rem;
+  border-bottom: var(--rule);
+  font-size: 0.68rem;
+  font-weight: 600;
+  line-height: 1.4;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+article::after {
+  content: "0123456789" / "";
+  display: block;
+  margin-top: 4rem;
+  padding-top: 0.75rem;
+  border-top: var(--rule);
+  font-size: 1.9rem;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+/* the face, named under the figures */
+body::after {
+  content: "Unbounded · wide display sans · weights 200 to 900" / "";
+  display: block;
+  max-width: var(--measure);
+  margin: 0.75rem auto 0;
+  font-size: 0.68rem;
+  font-weight: 600;
+  line-height: 1.4;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+@media (min-width: 66rem) {
+  body::after { max-width: var(--wide); margin: 0.75rem 0 0; }
+}

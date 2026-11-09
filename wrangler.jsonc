@@ -1,0 +1,20 @@
+// Cloudflare serves build/ as a static site: files only, no Worker code.
+// The GitHub Action runs `npm run build` then `npx wrangler deploy` on every
+// push to main. To deploy by hand, do the same after `npx wrangler login`.
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "dominicbaggott-com",
+  "compatibility_date": "2026-11-09",
+  "assets": {
+    // A folder URL like /when-bottlenecks-move/ serves that folder's
+    // index.html, and /when-bottlenecks-move redirects to it. Cache headers
+    // are in src/_headers, which the build copies across.
+    "directory": "./build",
+    "html_handling": "auto-trailing-slash"
+  },
+  // Served at dominicbaggott.com only. Deploying creates the domain's DNS
+  // record and certificate. www redirects here through a Cloudflare redirect
+  // rule, set up in the dashboard.
+  "routes": [{ "pattern": "dominicbaggott.com", "custom_domain": true }],
+  "workers_dev": false
+}
