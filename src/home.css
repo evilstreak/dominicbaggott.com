@@ -55,6 +55,19 @@
   font-display: swap;
 }
 
+@font-face {
+  font-family: "Card Anton";
+  src: url("in-other-peoples-words/fonts/anton.woff2") format("woff2");
+  font-display: swap;
+}
+@font-face {
+  font-family: "Card Newsreader";
+  src: url("in-other-peoples-words/fonts/newsreader-italic.woff2") format("woff2");
+  font-weight: 200 800;
+  font-style: italic;
+  font-display: swap;
+}
+
 :root {
   --paper: #F1EEE6;
   --ink: #15140F;
@@ -537,6 +550,77 @@ li:has(> article [href^="thoughts-on-recording-thoughts"]) > article::after {
   font-stretch: 75%;
   letter-spacing: 0.08em;
   text-transform: uppercase;
+}
+
+/* ---- #121212 · In other people’s words ---------------------------------- */
+
+li:has(> article [href^="in-other-peoples-words"]),
+li:has(> article [href^="in-other-peoples-words"]) > article {
+  background: #121212;
+}
+li:has(> article [href^="in-other-peoples-words"]) > article {
+  color: #F3EDE2;
+  font-family: "Card Newsreader", Georgia, serif;
+}
+li:has(> article [href^="in-other-peoples-words"]) > article > p:first-child {
+  padding-bottom: 0.625rem;
+  border-bottom: 2px solid currentColor;
+  font-family: "Card Anton", Impact, sans-serif;
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+/* the poster: a few of the piece's excerpts, billed above the title. Sizes
+   follow the card's width, but stop growing at what fits three across: the
+   card is no taller when it's wider. */
+li:has(> article [href^="in-other-peoples-words"]) ul {
+  order: 1;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(1rem, 5cqi, 1.75rem) clamp(0.75rem, 4cqi, 1.5rem);
+  align-items: end;
+  margin: clamp(1.5rem, 7cqi, 2.5rem) 0 0;
+  padding: 0;
+  list-style: none;
+  text-align: center;
+}
+li:has(> article [href^="in-other-peoples-words"]) ul li {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+}
+li:has(> article [href^="in-other-peoples-words"]) q {
+  font: clamp(1.125rem, 5.5cqi, 1.5rem)/0.98 "Card Anton", Impact, sans-serif;
+  text-transform: uppercase;
+  text-wrap: balance;
+  quotes: "“" "”";
+}
+li:has(> article [href^="in-other-peoples-words"]) ul span {
+  font-size: 0.75rem;
+  font-style: italic;
+  line-height: 1.3;
+}
+li:has(> article [href^="in-other-peoples-words"]) ul li:nth-child(n + 3) { grid-column: 1 / -1; }
+li:has(> article [href^="in-other-peoples-words"]) ul li:nth-child(3) { color: #FF3EA5; }
+li:has(> article [href^="in-other-peoples-words"]) ul li:nth-child(3) q { font-size: clamp(2.5rem, 13.5cqi, 3.5rem); }
+li:has(> article [href^="in-other-peoples-words"]) ul li:nth-child(4) q { font-size: clamp(1.375rem, 6.5cqi, 1.75rem); }
+/* the billing, at the foot of the card */
+li:has(> article [href^="in-other-peoples-words"]) h2 {
+  order: 2;
+  margin: auto 0 0;
+  padding-top: 1rem;
+  border-top: 2px solid currentColor;
+  font: 400 clamp(1.875rem, 9.5cqi, 2.5rem)/0.92 "Card Anton", Impact, sans-serif;
+  text-align: center;
+  text-transform: uppercase;
+  text-wrap: balance;
+}
+li:has(> article [href^="in-other-peoples-words"]) h2::before {
+  content: "Dominic Baggott in" / "";
+  display: block;
+  margin-bottom: 0.5rem;
+  font: italic 400 1rem/1.3 "Card Newsreader", Georgia, serif;
+  text-transform: none;
 }
 
 /* ---- Contact, the short version and the colophon ------------------------- */

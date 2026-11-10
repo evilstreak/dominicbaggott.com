@@ -1,0 +1,282 @@
+/* In other people’s words — Poster
+   Plain elements only, no classes. See README.md for what maps to what. */
+
+@font-face {
+  font-family: "Poster Anton";  /* own names, so an installed copy can never stand in */
+  src: url("fonts/anton.woff2") format("woff2");
+  font-display: swap;
+}
+@font-face {
+  font-family: "Poster Young Serif";
+  src: url("fonts/young-serif.woff2") format("woff2");
+  font-display: swap;
+}
+@font-face {
+  font-family: "Poster Newsreader";
+  src: url("fonts/newsreader.woff2") format("woff2");
+  font-weight: 200 800;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Poster Newsreader";
+  src: url("fonts/newsreader-italic.woff2") format("woff2");
+  font-weight: 200 800;
+  font-style: italic;
+  font-display: swap;
+}
+
+:root {
+  --paper: #121212;
+  --ink: #F3EDE2;
+  --pink: #FF3EA5;
+  --hairline: 1px solid #8A857C;
+  --rule: 2px solid var(--ink);
+  --measure: 48rem;  /* the whole page */
+  --side: 15rem;     /* my column, beside the quotes */
+  --gap: 2.75rem;    /* between the two */
+  --anton: "Poster Anton", Impact, "Arial Narrow", sans-serif;
+  --young: "Poster Young Serif", Rockwell, Georgia, serif;
+  --news: "Poster Newsreader", Georgia, serif;
+}
+
+* { box-sizing: border-box; }
+
+html {
+  background: var(--paper);
+  color: var(--ink);
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  padding: 2.5rem 1rem 3rem;
+  font: 400 1rem/1.6 var(--news);
+  font-optical-sizing: auto;
+  font-synthesis: none;
+}
+
+a { color: inherit; text-decoration-thickness: 1px; text-underline-offset: 0.2em; }
+
+::selection { background: var(--pink); color: var(--paper); }
+
+/* The way back to the homepage */
+header {
+  max-width: var(--measure);
+  margin: 0 auto 1.5rem;
+  font: 0.875rem/1.4 var(--anton);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+header a { text-decoration: none; }
+header a:hover { text-decoration: underline; }
+/* Anton has no left arrow, so “back” is its double guillemet */
+header a::before { content: "« " / ""; }
+
+/* Sizes on the poster and title follow the page's width */
+article {
+  max-width: var(--measure);
+  margin: 0 auto;
+  container-type: inline-size;
+}
+
+/* ---- The poster -----------------------------------------------------------
+   The bold excerpts from the quotes, billed in page.mjs's BILLING order.
+   Each slot's size and width is set by its position. */
+
+article > ul {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 5.5cqi 3cqi;
+  align-items: end;
+  margin: 7cqi 0 0;
+  padding: 0;
+  list-style: none;
+  text-align: center;
+}
+article > ul li {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  grid-column: span 3;
+}
+article > ul q {
+  font: var(--size, 6cqi)/0.98 var(--anton);
+  text-transform: uppercase;
+  text-wrap: balance;
+  quotes: "“" "”";
+}
+article > ul span {
+  font-size: max(0.75rem, 1.8cqi);
+  font-style: italic;
+  line-height: 1.3;
+}
+article > ul li:nth-child(1) { --size: 7cqi; }
+article > ul li:nth-child(2) { --size: 5.7cqi; }
+article > ul li:nth-child(3) { --size: 17cqi; grid-column: 1 / -1; color: var(--pink); }
+article > ul li:nth-child(4) { --size: 5.2cqi; grid-column: span 2; }
+article > ul li:nth-child(5) { --size: 5.2cqi; grid-column: span 4; }
+article > ul li:nth-child(6) { --size: 6.5cqi; grid-column: span 4; }
+article > ul li:nth-child(7) { --size: 4.4cqi; grid-column: span 2; }
+article > ul li:nth-child(3) span { font-size: max(0.8125rem, 2.1cqi); }
+
+/* ---- The billing ---------------------------------------------------------- */
+
+h1 {
+  margin: 8cqi 0 0;
+  padding: 1.75rem 0 1.5rem;
+  border-block: var(--rule);
+  font: 400 14.5cqi/0.9 var(--anton);
+  text-align: center;
+  text-transform: uppercase;
+  text-wrap: balance;
+}
+h1::before {
+  content: "Dominic Baggott in" / "";
+  display: block;
+  margin-bottom: 0.75rem;
+  font: italic 400 1.125rem/1.3 var(--news);
+  text-transform: none;
+}
+
+/* The introduction */
+article > p {
+  margin: 3.5rem 0 0;
+  font-size: 1.25rem;
+  line-height: 1.5;
+}
+
+/* ---- The quotes ------------------------------------------------------------
+   One section per person: my paragraphs, their quote in a figure, and
+   sometimes a few more of mine after it. */
+
+section {
+  margin-top: 5.5rem;
+  padding-top: 1rem;
+  border-top: var(--rule);
+}
+
+h2 {
+  margin: 0 0 1.25rem;
+  font: 400 3rem/1 var(--anton);
+  text-transform: uppercase;
+}
+
+section > div p { margin: 0 0 1rem; }
+
+figure { margin: 0.5rem 0 2rem; }
+
+/* Young Serif comes in one style, so the quotes are set upright, and the
+   shorter the quote, the larger (page.mjs passes its length as --words) */
+blockquote {
+  --base: clamp(1.25rem, 3.6cqi + 0.5rem, 1.5625rem);
+  margin: 0;
+  font-family: var(--young);
+  font-size: max(var(--base), min(5rem - var(--words) * 0.12rem, 3.25rem, 11cqi));
+  line-height: calc(1em + 0.5rem);
+}
+blockquote p { margin: 0; }
+blockquote p + p { margin-top: 0.6em; }
+/* the poster's excerpts, in context */
+blockquote strong { font-weight: inherit; color: var(--pink); }
+
+figcaption {
+  margin-top: 1rem;
+  font-size: 1rem;
+  font-style: italic;
+  line-height: 1.4;
+}
+figcaption b {
+  font: 400 0.9375rem/1.4 var(--anton);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+/* Footnote markers */
+/* in the body text, even inside a quote */
+sup { font: 600 0.7em/0 var(--news); }
+blockquote sup { font-size: 0.4em; }
+sup a { text-decoration: none; }
+
+/* Notes sit straight after the paragraph or quote that references them */
+aside[role="doc-footnote"] {
+  max-width: 22rem;
+  margin: 0 0 1rem;
+  padding-top: 0.5rem;
+  border-top: var(--hairline);
+  font-size: 0.8125rem;
+  line-height: 1.5;
+}
+figure > aside[role="doc-footnote"] { margin-top: 1.25rem; }
+aside[role="doc-footnote"] b { font-weight: 600; }
+
+/* Wide screens: my words in a narrow column, theirs beside it. The quote
+   spans both rows, and any slack goes to the second, so whatever follows
+   the quote starts straight after my opening paragraphs. */
+@media (min-width: 50rem) {
+  article > p { margin-left: calc(var(--side) + var(--gap)); }
+
+  section {
+    display: grid;
+    grid-template-columns: var(--side) minmax(0, 1fr);
+    grid-template-rows: auto auto 1fr;
+    column-gap: var(--gap);
+    align-items: start;
+  }
+  h2 { grid-column: 1 / -1; }
+  section > div { grid-column: 1; font-size: 0.9375rem; }
+  section > div:first-of-type { grid-row: 2; }
+  figure { grid-column: 2; grid-row: 2 / span 2; margin-top: 0; }
+  figure + div { grid-row: 3; }
+}
+
+/* ---- Footer: the faces and their licence --------------------------------- */
+
+/* Under a rule, with the sample (see Specimen labels) at the left and the
+   credit opposite it, both hanging from the rule. On a phone the credit
+   drops below. Names in the credit are tied with non-breaking spaces. */
+footer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem 2rem;
+  max-width: var(--measure);
+  margin: 5rem auto 0;
+  padding-top: 0.75rem;
+  border-top: var(--rule);
+  font-size: 0.875rem;
+  line-height: 1.6;
+}
+footer p { flex: 0 1 26em; margin: 0; text-wrap: balance; }
+@media (min-width: 50rem) {
+  footer p { text-align: right; }
+}
+
+/* ---- Specimen labels -------------------------------------------------
+   The label line and the sample. Generated content with empty alt text,
+   so screen readers skip them. Delete this section to remove them. */
+
+/* Laid out like the homepage card: the code at the left, the kind at the
+   right, pushed apart by justifying the line. The space inside the code is
+   a four-per-em space (U+2005), which justification never stretches. Anton
+   has no such space, so the browser borrows a blank one from a fallback
+   font; it looks the same. */
+article::before {
+  content: "Specimen\2005#121212 Credential" / "";
+  display: block;
+  padding-bottom: 0.6rem;
+  border-bottom: var(--rule);
+  font: 0.875rem/1.4 var(--anton);
+  letter-spacing: 0.1em;
+  text-align: justify;
+  text-align-last: justify;
+  text-transform: uppercase;
+}
+
+/* the sample, a poster’s exclamation, opposite the credit in the footer */
+footer::before {
+  content: "“!”" / "";
+  font: 3.5rem/0.85 var(--anton);
+}
+

@@ -40,12 +40,15 @@ npm run serve    # http://localhost:8000
 
 All under the SIL Open Font License, with the licence carried in each font’s metadata and included alongside each source font.
 
+- [Anton](https://github.com/googlefonts/AntonFont) by Vernon Adams
 - [Archivo](https://github.com/Omnibus-Type/Archivo) by Omnibus-Type
 - [Besley](https://github.com/indestructible-type/Besley) by Owen Earl
 - [Bodoni Moda](https://github.com/indestructible-type/Bodoni) by Owen Earl (the cover)
 - [Fraunces](https://github.com/undercasetype/Fraunces) by Undercase Type
 - [Martian Mono](https://github.com/evilmartians/mono) by Evil Martians
+- [Newsreader](https://github.com/productiontype/Newsreader) by Production Type
 - [Unbounded](https://github.com/googlefonts/unbounded)
+- [Young Serif](https://github.com/noirblancrouge/YoungSerif) by Bastien Sozeau
 
 ## Licence
 
